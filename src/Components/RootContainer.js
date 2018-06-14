@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import Drawer from 'material-ui/Drawer';
-import AppBar from 'material-ui/AppBar';
+import {Drawer, withStyles, AppBar} from 'material-ui';
 import Toolbar from 'material-ui/Toolbar';
 import List from 'material-ui/List';
 import Typography from 'material-ui/Typography';
@@ -13,16 +11,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 import WebAuthAPI from "../examples/WebAuth/WebAuthAPI";
 import { Route } from "react-router";
-import { Link } from "react-router-dom";
 import WebAuthAPISuccess from "../examples/WebAuth/WebAuthAPISuccess";
-import { FormControlLabel, Switch } from "material-ui";
-import DataTransactionsLeasing from "../examples/DataTransactionsLeasing/DataTransactionsLeasing";
+import { FormControlLabel, Snackbar, Switch } from "material-ui";
 import PaymentAPI from "../examples/PaymentAPI/PaymentAPI";
 import PaymentAPISuccess from "../examples/PaymentAPI/PaymentAPISuccess";
-import VotingInit from "../examples/Voting/VotingInit";
+import TwitterInit from "../examples/Twitter/TwitterInit";
+import TwitterSettings from "../examples/Twitter/TwitterSettings";
+import TwitterUsersList from "../examples/Twitter/TwitterUsersList";
+import TwitterUser from "../examples/Twitter/TwitterUser";
+import TwitterFeed from "../examples/Twitter/TwitterFeed";
 
 const drawerWidth = 250;
 
@@ -32,8 +32,8 @@ const styles = theme => ({
 	},
 	appFrame: {
 		zIndex: 1,
-		overflow: 'scroll',
-		position: 'relative',
+		// overflow: 'scroll',
+		// position: 'relative',
 		display: 'flex',
 		width: '100%',
 	},
@@ -120,6 +120,12 @@ class RootContainer extends React.Component {
 		developersMode: true
 	};
 	
+	
+	constructor(props) {
+		super(props);
+		this.showSnackbar = this.showSnackbar.bind(this);
+	}
+	
 	handleDrawerOpen = () => {
 		this.setState({ open: true });
 	};
@@ -130,6 +136,15 @@ class RootContainer extends React.Component {
 	
 	handleChange = name => event => {
 		this.setState({ [name]: event.target.checked });
+	};
+	
+	
+	showSnackbar(text) {
+		this.setState({ snackbarText: text });
+	}
+	
+	handleSnackbarClose() {
+		this.setState({ snackbarOpen: false });
 	};
 	
 	
@@ -162,6 +177,7 @@ class RootContainer extends React.Component {
 				<List>{otherMailFolderListItems}</List>
 			</Drawer>
 		);
+		
 		
 		return (
 			<Router>
@@ -207,16 +223,62 @@ class RootContainer extends React.Component {
 							})}
 						>
 							<div className={classes.drawerHeader}/>
-							<Route exact path="/" component={WebAuthAPI} developersMode={this.state.developersMode}/>
-							<Route path="/web-auth-success" component={WebAuthAPISuccess} developersMode={this.state.developersMode}/>
-							<Route path="/data-transactions-leasing" component={DataTransactionsLeasing} developersMode={this.state.developersMode}/>
-							<Route path="/payment-api" component={PaymentAPI} developersMode={this.state.developersMode}/>
-							<Route path="/payment-success" component={PaymentAPISuccess} developersMode={this.state.developersMode}/>
-							<Route path="/voting" component={VotingInit} developersMode={this.state.developersMode}/>
+							
+							{/*Web Auth API*/}
+							<Route exact path='/' render={(props) => (
+								<WebAuthAPI {...props} developersMode={this.state.developersMode}/>
+							)}/>
+							<Route path="/web-auth-success" component={WebAuthAPISuccess}/>
+							
+							{/*<Route path="/data-transactions-leasing" component={DataTransactionsLeasing} developersMode={this.state.developersMode}/>*/}
+							
+							{/*Payment API */}
+							<Route exact path='/payment-api' render={(props) => (
+								<PaymentAPI {...props} developersMode={this.state.developersMode}/>
+							)}/>
+							<Route exact path='/payment-success' render={(props) => (
+								<PaymentAPISuccess {...props} developersMode={this.state.developersMode}/>
+							)}/>
+							
+							
+							<Route exact path='/twitter' render={(props) => (
+								<TwitterInit {...props} developersMode={this.state.developersMode} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							<Route exact path='/twitter/settings' render={(props) => (
+								<TwitterSettings {...props} developersMode={this.state.developersMode} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							<Route exact path='/twitter/users' render={(props) => (
+								<TwitterUsersList {...props} developersMode={this.state.developersMode} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							<Route exact path='/twitter/user/:address' render={(props) => (
+								<TwitterUser {...props} developersMode={this.state.developersMode} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							<Route exact path='/twitter/my/feed' render={(props) => (
+								<TwitterFeed {...props} developersMode={this.state.developersMode} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							
+							{/*<Route path="/voting" component={VotingInit} developersMode={this.state.developersMode}/>*/}
 							{/*<Route path="/voting/create" component={VotingCreate} developersMode={this.state.developersMode}/>*/}
 							{/*<Route path="/voting/vote" component={VotingVote} developersMode={this.state.developersMode}/>*/}
 							{/*<Route path="/voting/results" component={VotingResults} developersMode={this.state.developersMode}/>*/}
 						</main>
+						<Snackbar
+							anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'left'
+							}}
+							open={this.state.snackbarOpen}
+							onClose={this.handleSnackbarClose}
+							message={<span id="message-id">{this.state.snackbarText}</span>}
+							SnackbarContentProps={{
+								'aria-describedby': 'message-id',
+							}}
+						/>
 					</div>
 				</div>
 			</Router>

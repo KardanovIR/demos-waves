@@ -1,27 +1,21 @@
 import React from 'react';
-import { withStyles } from "material-ui/styles/index";
 import PropTypes from "prop-types";
 import {
 	Button,
+  withStyles,
 	Card,
 	Typography,
 	CardContent,
 	Grid,
 	TextField,
-	FormControlLabel,
-	Table,
-	TableHead, TableRow, TableCell, TableBody, Tabs, Tab, Dialog, DialogTitle, DialogActions
+	FormControlLabel, Dialog, DialogTitle, DialogActions
 } from "material-ui";
-import Switch from "material-ui/es/Switch/Switch";
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/styles/hljs';
-import DialogContent from "material-ui/es/Dialog/DialogContent";
-import DialogContentText from "material-ui/es/Dialog/DialogContentText";
+import Switch from "material-ui/Switch/Switch";
+import DialogContent from "material-ui/Dialog/DialogContent";
+import DialogContentText from "material-ui/Dialog/DialogContentText";
 
 
 const WavesAPI = require('waves-api');
-
-const Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
 
 const styles = theme => ({
 	card: {
@@ -99,7 +93,6 @@ class WebAuthAPI extends React.Component {
 	handleSwitchChange = name => event => {
 		this.setState({ [name]: event.target.checked });
 	};
-	
 	
 	openPayWindow = () => {
 		window.open(this.getPaymentLink(), '_blank', null, false);
@@ -219,7 +212,7 @@ class WebAuthAPI extends React.Component {
 					<Grid item xs={6} sm={6} className={classes.paper}>
 						<Card className={classes.card} elevation={4}>
 							<CardContent>
-								<Typography style={{wordBreak: 'break-all'}} className={classes.code}>
+								<Typography style={{ wordBreak: 'break-all' }} className={classes.code}>
 									{this.getPaymentLink()}
 								</Typography>
 							</CardContent>
@@ -269,4 +262,4 @@ WebAuthAPI.propTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-export default withStyles({}, { withTheme: true })(WebAuthAPI);
+export default withStyles(styles, { withTheme: true })(WebAuthAPI);

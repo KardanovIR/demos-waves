@@ -1,8 +1,7 @@
 import React from "react";
-import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
 
-import { AppBar, Button, IconButton, Toolbar, Typography } from "material-ui";
+import { AppBar, Button, withStyles, IconButton, Toolbar, Typography } from "material-ui";
 import MenuIcon from '@material-ui/icons/Menu';
 
 

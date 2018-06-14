@@ -1,14 +1,16 @@
 import React from 'react';
 import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
-import LaunchIcon from '@material-ui/icons/Launch';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import SuperVisorIcon from '@material-ui/icons/SupervisorAccount';
+import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
 import { Link } from 'react-router-dom'
 
 
 export const mailFolderListItems = (
 	<div>
-		<Link to="/">
+		<Link to="/" className="no-underline">
 			<ListItem button>
 				<ListItemIcon>
 					<FingerprintIcon/>
@@ -16,7 +18,7 @@ export const mailFolderListItems = (
 				<ListItemText primary="Web Auth API"/>
 			</ListItem>
 		</Link>
-		<Link to="/payment-api">
+		<Link to="/payment-api" className="no-underline">
 			<ListItem button>
 				<ListItemIcon>
 					<AttachMoneyIcon/>
@@ -29,12 +31,28 @@ export const mailFolderListItems = (
 
 export const otherMailFolderListItems = (
 	<div>
-		<Link to="/data-transactions-leasing">
+		<Link to="/twitter" className="no-underline">
 			<ListItem button>
 				<ListItemIcon>
-					<LaunchIcon/>
+					<AccountCircleIcon/>
 				</ListItemIcon>
-				<ListItemText primary="Assets Leasing"/>
+				<ListItemText primary="Twitter Setup"/>
+			</ListItem>
+		</Link>
+		<Link to="/twitter/users" className="no-underline">
+			<ListItem button>
+				<ListItemIcon>
+					<SuperVisorIcon/>
+				</ListItemIcon>
+				<ListItemText primary="Twitter Users"/>
+			</ListItem>
+		</Link>
+		<Link to="/twitter/my/feed" className="no-underline">
+			<ListItem button>
+				<ListItemIcon>
+					<ViewAgendaIcon/>
+				</ListItemIcon>
+				<ListItemText primary="Twitter My Feed"/>
 			</ListItem>
 		</Link>
 	</div>

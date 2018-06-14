@@ -34,3 +34,23 @@
 .hidden {
     display: none !important;
 }
+
+.chrome-picker {
+    box-shadow: none !important;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+.profile-card-wrapper:before {
+    content: " ";
+    height: 100px;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+}
+
+.profile-card-avatar {
+}
