@@ -23,7 +23,7 @@ WORKDIR backend
 RUN npm install
 
 EXPOSE 80
-CMD [ "TWITTER_SEED=${TWITTER_SEED} pm2", "start", "index.js" ]
+ENTRYPOINT TWITTER_SEED="$TWITTER_SEED" node index.js
 
 # serve
 # docker run -d -p 4000:4000
