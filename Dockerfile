@@ -21,10 +21,9 @@ RUN npm install pm2 -g
 # Install backend dependencies
 WORKDIR backend
 RUN npm install
-RUN TWITTER_SEED=${TWITTER_SEED} pm2 start index.js
 
 EXPOSE 80
-
+CMD [ "TWITTER_SEED=${TWITTER_SEED} pm2", "start", "index.js" ]
 
 # serve
 # docker run -d -p 4000:4000
