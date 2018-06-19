@@ -9,6 +9,7 @@ import {
     withStyles,
     TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
 } from "material-ui";
+import { Link } from "react-router-dom";
 
 
 const WavesAPI = require('waves-api');
@@ -96,16 +97,27 @@ class Console extends React.Component {
                       <Card>
                           <CardContent>
                               <Typography>
-                                  Waves demo console uses Waves Node.js library<a href=''>waves-api</a>.
-                                  This console can be used as playground. There are
+                                  Waves demo console uses Waves Node.js library <a
+                                href='https://github.com/wavesplatform/waves-api' target='_blank'>waves-api</a>.
+                                  This console can be used as playground.
+                                  Console gives access to Waves instance and TX_EXAMPLES.
                               </Typography>
+                              <Grid justify="flex-end">
+                                  <Link to="https://github.com/wavesplatform/waves-api" className="no-underline"
+                                        target="_blank">
+                                      <Button variant="contained" color="primary" className={classes.button}>
+                                          Documentation
+                                      </Button>
+                                  </Link>
+                                  <Link to="/console/" className="no-underline" target="_blank">
+                                      <Button variant="contained" color="primary" className={classes.button}>
+                                          Open in new window
+                                      </Button>
+                                  </Link>
+                              </Grid>
                           </CardContent>
                       </Card>
-                      <Card>
-                          <CardContent>
-                              <iframe src='/console/' className={classes.iframe}/>
-                          </CardContent>
-                      </Card>
+                      <iframe src='/console/' className={classes.iframe}/>
                   </Grid>
               </Grid>
               <Dialog
