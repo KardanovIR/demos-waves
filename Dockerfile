@@ -16,16 +16,21 @@ WORKDIR demos-waves
 RUN npm install
 RUN npm run build
 
+
+
+# Install backend dependencies
+WORKDIR ../console
+RUN npm install
+RUN npm run build
+
 # Install backend dependencies
 RUN npm install pm2 -g
 # Install backend dependencies
 WORKDIR backend
 RUN npm install
 
-# Install backend dependencies
-WORKDIR ../console
-RUN npm install
-RUN npm run build
+
+WORKDIR ../backend
 
 EXPOSE 80
 ENTRYPOINT TWITTER_SEED="$TWITTER_SEED" node index.js
