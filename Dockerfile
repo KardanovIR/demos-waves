@@ -19,14 +19,14 @@ RUN npm run build
 
 
 # Install backend dependencies
-WORKDIR ../console
+WORKDIR console
 RUN npm install
 RUN npm run build
 
 # Install backend dependencies
 RUN npm install pm2 -g
 # Install backend dependencies
-WORKDIR backend
+WORKDIR ../backend
 RUN npm install
 
 
