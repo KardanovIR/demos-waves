@@ -103,7 +103,7 @@ class Console extends React.Component {
                       </Card>
                       <Card>
                           <CardContent>
-                              <iframe src='/console/' style={classes.iframe}/>
+                              <iframe src='/console/' className={classes.iframe}/>
                           </CardContent>
                       </Card>
                   </Grid>
