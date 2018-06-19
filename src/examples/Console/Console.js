@@ -24,7 +24,7 @@ const styles = theme => ({
         border: 0,
         width: '100%',
         height: '100%',
-        minHeight: window.innerHeight - 200
+        minHeight: window.innerHeight - 350
     },
     bullet: {
         display: 'inline-block',
