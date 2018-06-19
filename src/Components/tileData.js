@@ -5,6 +5,7 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SuperVisorIcon from '@material-ui/icons/SupervisorAccount';
 import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
+import WebAssetIcon from '@material-ui/icons/WebAsset';
 import { Link } from 'react-router-dom'
 
 
@@ -55,5 +56,19 @@ export const otherMailFolderListItems = (
 				<ListItemText primary="Twitter My Feed"/>
 			</ListItem>
 		</Link>
+	</div>
+);
+
+export const toolsItems = (
+	<div>
+		<Link to="/example/console" className="no-underline">
+			<ListItem button>
+				<ListItemIcon>
+					<WebAssetIcon/>
+				</ListItemIcon>
+				<ListItemText primary="Console"/>
+			</ListItem>
+		</Link>
+		
 	</div>
 );
