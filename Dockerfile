@@ -22,6 +22,11 @@ RUN npm install pm2 -g
 WORKDIR backend
 RUN npm install
 
+# Install backend dependencies
+WORKDIR ../console
+RUN npm install
+RUN npm run build
+
 EXPOSE 80
 ENTRYPOINT TWITTER_SEED="$TWITTER_SEED" node index.js
 

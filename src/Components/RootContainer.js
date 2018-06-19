@@ -10,7 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { mailFolderListItems, otherMailFolderListItems } from './tileData';
+import { mailFolderListItems, otherMailFolderListItems, toolsItems } from './tileData';
 import { BrowserRouter as Router, Link } from 'react-router-dom'
 import WebAuthAPI from "../examples/WebAuth/WebAuthAPI";
 import { Route } from "react-router";
@@ -23,6 +23,7 @@ import TwitterSettings from "../examples/Twitter/TwitterSettings";
 import TwitterUsersList from "../examples/Twitter/TwitterUsersList";
 import TwitterUser from "../examples/Twitter/TwitterUser";
 import TwitterFeed from "../examples/Twitter/TwitterFeed";
+import Console from "../examples/Console/Console";
 
 const drawerWidth = 250;
 
@@ -175,6 +176,8 @@ class RootContainer extends React.Component {
 				<List>{mailFolderListItems}</List>
 				<Divider/>
 				<List>{otherMailFolderListItems}</List>
+				<Divider/>
+				<List>{toolsItems}</List>
 			</Drawer>
 		);
 		
@@ -259,6 +262,11 @@ class RootContainer extends React.Component {
 							
 							<Route exact path='/twitter/my/feed' render={(props) => (
 								<TwitterFeed {...props} developersMode={this.state.developersMode} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							
+							<Route exact path='/example/console' render={(props) => (
+								<Console {...props} showSnackbar={this.showSnackbar}/>
 							)}/>
 							
 							
