@@ -109,6 +109,9 @@ class Console extends React.Component {
                                           Documentation
                                       </Button>
                                   </Link>
+                                  <Button variant="contained" color="primary" className={classes.button}>
+                                      Examples
+                                  </Button>
                                   <Link to="/console/" className="no-underline" target="_blank">
                                       <Button variant="contained" color="primary" className={classes.button}>
                                           Open in new window
