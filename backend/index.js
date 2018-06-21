@@ -8,8 +8,8 @@ const path = require('path');
 app.use(cors());
 app.use('/api/v1/twitter', twitterRouter);
 
-const staticPath = path.resolve(__dirname, '../build');
 const jsConsolePath = path.resolve(__dirname, '../console/build');
+const staticPath = path.resolve(__dirname, '../build');
 
 app.use(express.static(staticPath));
 app.use('/console', express.static(jsConsolePath));
