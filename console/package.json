@@ -32,7 +32,7 @@
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "waves-api": "^0.24.2",
+    "@waves/waves-api": "1.0.0",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {

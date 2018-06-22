@@ -18,6 +18,10 @@ app.get('/console/index.html', function (request, response) {
     response.sendFile(path.resolve(__dirname, jsConsolePath + '/index.html'));
 });
 
+app.get('/console/waves-loaded.html', function (request, response) {
+    response.sendFile(path.resolve(__dirname, jsConsolePath + '/waves-loaded.html'));
+});
+
 app.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, staticPath + '/index.html'));
 });

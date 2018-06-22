@@ -90,6 +90,11 @@ window.Helpers = {
             fee: 100000,
             
         },
-        SET_SCRIPT: {}
+        SET_SCRIPT: {
+            fee: 100000,
+            senderPublicKey: "66xdGznqt2AVLMZRHme9vFPC6cvN4yV95wRWPfTus3Qe",
+            sender: "3N7H4jTBMKtZfNCY86K2ND1rWcvFsGjDT3X",
+            script: 'base64:AQa3b8tH'
+        }
     }
 };
