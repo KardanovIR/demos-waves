@@ -30,6 +30,9 @@ class TwitterUsersList extends React.Component {
 	constructor(props) {
 		super(props);
 		const accountData = JSON.parse(window.localStorage.getItem('waves.accountData'));
+      if (!accountData) {
+          window.location.href = '/twitter';
+      }
 		const address = accountData.address;
 		if (!address) {
 			window.location.href = '/twitter';
@@ -184,7 +187,7 @@ class TwitterUsersList extends React.Component {
 												<FollowButton userAddress={user.address} accountData={this.state.accountData}/>
 											}
 											title={<Link to={`/twitter/user/${user.address}`}>{user.displayName}</Link>}
-											subheader="October 16, 2097"
+											subheader=""
 										/>
 										<CardContent>
 											<Typography component="p">
