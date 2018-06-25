@@ -364,7 +364,7 @@ class Console extends React.Component {
                                   "\n  }];" +
                                   "\nconst dataTxObj = Object.assign(Helpers.TX_EXAMPLES.DATA, {" +
                                   "\n  data: data," +
-                                  "\n  fee: Waves.tools.getMinimumDataTxFee(data)," +
+                                  "\n  fee: await Waves.tools.getMinimumDataTxFee(data) + 400000," +
                                   "\n  sender: elephantAccount.address," +
                                   "\n  senderPublicKey: elephantAccount.keyPair.publicKey" +
                                   "\n});" +
