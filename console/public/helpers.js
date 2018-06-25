@@ -96,5 +96,16 @@ window.Helpers = {
             sender: "3N7H4jTBMKtZfNCY86K2ND1rWcvFsGjDT3X",
             script: 'base64:AQa3b8tH'
         }
+    },
+    TX_NAMES: {
+        TRANSFER: 'transfer',
+        ISSUE: 'issue',
+        REISSUE: 'reissue',
+        BURN: 'burn',
+        LEASE: 'lease',
+        CANCEL_LEASING: 'cancelLeasing',
+        ALIAS: 'alias',
+        DATA: 'data',
+        SET_SCRIPT: 'setScript',
     }
 };

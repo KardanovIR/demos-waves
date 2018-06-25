@@ -24,7 +24,6 @@ const help = () => ({
 :history
 :about
 :version
-:demo
 copy(<value>) and $_ for last value
 
 ${about().value}`,

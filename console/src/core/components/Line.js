@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LineNav from './LineNav';
+import ObjectType from '../components/types/ObjectType';
 import which from '../lib/which-type';
 
 class Line extends Component {
@@ -65,6 +66,15 @@ class Line extends Component {
 
           {(type === 'log' && Array.isArray(value) ? value : [value]).map(
             (value, i) => {
+              if (value){
+                try {
+                  const valueType = ({}).toString.call(value);
+                  if (valueType === '[object Object]'){
+                    value = Object.assign({}, value);
+                  }
+                } catch (e) { // only happens when typeof is protected (...randomly)
+                }
+              }
               const Type = which(value);
               return (
                 <Type
