@@ -159,7 +159,8 @@ class Console extends React.Component {
                     width: '50%',
                     zIndex: 99,
                     paddingTop: 65,
-                    textAlign: 'left'
+                    textAlign: 'left',
+                    height: 'calc(100% - 65px);'
                 }}
                 PaperProps={{
                     style: {
