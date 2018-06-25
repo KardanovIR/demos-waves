@@ -209,12 +209,12 @@ class Console extends React.Component {
                               To generate random seed, keypair and address and save it in a variable, Elephant uses:
                               <SyntaxHighlighter justify="left" language="javascript"
                                                  customStyle={{ 'textAlign': 'left' }}
-                                                 style={docco}>{"const inalAccount = Waves.Seed.create();"}</SyntaxHighlighter>
+                                                 style={docco}>{"const elephantAccount = Waves.Seed.create();"}</SyntaxHighlighter>
                               Keypair and address from existing seed can be generated as shown below:
                               
                               <SyntaxHighlighter justify="left" language="javascript"
                                                  customStyle={{ 'textAlign': 'left', 'overflowX': 'scroll' }}
-                                                 style={docco}>{"const elephantAccount = Waves.Seed.fromExistingPhrase('learn empty exotic " +
+                                                 style={docco}>{"const inalAccount = Waves.Seed.fromExistingPhrase('learn empty exotic " +
                               "film turtle address loud menu try crater defy boil mutual " +
                               "used dentist');"}</SyntaxHighlighter>
                           
@@ -267,11 +267,15 @@ class Console extends React.Component {
                                   "\n    let lenaPubKey     = base58'\${lenaPubKey}'" +
                                   "\n    let inalPubKey     = base58'\${inalPubKey}'" +
                                   "\n    let elephantPubKey = base58'\${elephantAccount.keyPair.publicKey}' \n\n" +
-                                  "\n    let isDataTx       = if(tx.type == 12)                                         then 1 else 0" +
-                                  "\n    let inalSigned     = if(sigVerify(tx.bodyBytes, tx.proofs[0], lenaPubKey    )) then 1 else 0" +
-                                  "\n    let lenaSigned     = if(sigVerify(tx.bodyBytes, tx.proofs[1], inalPubKey    )) then 1 else 0" +
-                                  "\n    let elephantSigned = if(sigVerify(tx.bodyBytes, tx.proofs[2], elephantPubKey)) then 1 else 0" +
-                                  "\n\n  elephantSigned == 1 && ((lenaSigned + elephantSigned + isDataTx) > 0)`;" +
+                                  "\n    match tx {" +
+                                  "\n      case tx:DataTransaction =>" +
+                                  "\n        if(sigVerify(tx.bodyBytes, tx.proofs[0], elephantPubKey)) then true else false" +
+                                  "\n      case _ =>" +
+                                  "\n        let elephantSigned   = if(sigVerify(tx.bodyBytes, tx.proofs[0], elephantPubKey)) then 1 else 0" +
+                                  "\n        let inalSigned       = if(sigVerify(tx.bodyBytes, tx.proofs[1], inalPubKey))     then 1 else 0" +
+                                  "\n        let lenaSigned       = if(sigVerify(tx.bodyBytes, tx.proofs[1], lenaPubKey))     then 1 else 0" +
+                                  "\n        elephantSigned == 1 && ((inalSigned + lenaSigned) > 0)" +
+                                  "\n    }`;" +
                                   "\nconst compiledScript = await Waves.API.Node.utils.script.compile(scriptBody);"
                               }</SyntaxHighlighter>
                           </Grid>
@@ -296,7 +300,7 @@ class Console extends React.Component {
                                   "\n  sender: elephantAccount.address," +
                                   "\n  senderPublicKey: elephantAccount.keyPair.publicKey" +
                                   "\n});" +
-                                  "\nconst setScriptTx = await Waves.tools.createTransaction(Helpers.TX_NAMES.SET_SCRIPT, setScriptObj);" +
+                                  "\nconst setScriptTx = await Waves.tools.createTransaction(Waves.constants.SET_SCRIPT_TX_NAME, setScriptObj);" +
                                   "\nsetScriptTx.addProof(elephantAccount.keyPair.privateKey);" +
                                   "\n\n" +
                                   "// send SetScriptTransaction to the network" +
@@ -330,7 +334,7 @@ class Console extends React.Component {
                                   "\n  sender: elephantAccount.address," +
                                   "\n  senderPublicKey: elephantAccount.keyPair.publicKey" +
                                   "\n});" +
-                                  "\nconst transferTx = await Waves.tools.createTransaction(Helpers.TX_NAMES.TRANSFER, transferTxObj);" +
+                                  "\nconst transferTx = await Waves.tools.createTransaction(Waves.constants.TRANSFER_TX_NAME, transferTxObj);" +
                                   "\ntransferTx.addProof(elephantAccount.keyPair.privateKey);" +
                                   "\n\n" +
                                   "\nconst transferTxJSON = await transferTx.getJSON();" +
@@ -351,20 +355,24 @@ class Console extends React.Component {
                               <SyntaxHighlighter justify="left" language="javascript"
                                                  customStyle={{ 'textAlign': 'left', 'overflowX': 'scroll' }}
                                                  style={docco}>{
-                                  "// create instance of TransactionWrapper and add signature" +
-                                  "\nconst setScriptObj = Object.assign(Helpers.TX_EXAMPLES.SET_SCRIPT, {" +
-                                  "\n  script: compiledScript," +
+                                  "// create instance of TransactionWrapper" +
+                                  "\nconst data = [{" +
+                                  "\n    key: 'payment-2018-06-25-cake'," +
+                                  "\n    value: JSON.stringify(transferTxJSON)," +
+                                  "\n    type: 'string'" +
+                                  "\n  }];" +
+                                  "\nconst dataTxObj = Object.assign(Helpers.TX_EXAMPLES.DATA, {" +
+                                  "\n  data: data," +
+                                  "\n  fee: Waves.tools.getMinimumDataTxFee(data)," +
                                   "\n  sender: elephantAccount.address," +
                                   "\n  senderPublicKey: elephantAccount.keyPair.publicKey" +
                                   "\n});" +
-                                  "\nconst setScriptTx = await Waves.tools.createTransaction(Helpers.TX_NAMES.SET_SCRIPT, setScriptObj);" +
-                                  "\nsetScriptTx.addProof(elephantAccount.keyPair.privateKey);" +
+                                  "\nconst dataTx = await Waves.tools.createTransaction(Waves.constants.DATA_TX_NAME, dataTxObj);" +
+                                  "\ndataTx.addProof(elephantAccount.keyPair.privateKey);" +
                                   "\n\n" +
-                                  "//send SetScriptTransaction to the network" +
-                                  "\n//to send tx we need TESTNET WAVES on Elephants' account" +
-                                  "\n//you can get them in faucet: https://testnet.wavesexplorer.com/faucet" +
-                                  "\nconst txJSON = await setScriptTx.getJSON();" +
-                                  "\nconst setScriptResult = await Waves.API.Node.transactions.rawBroadcast(txJSON);"
+                                  "//send Data Transction to the network" +
+                                  "\nconst dataTxJSON = await dataTx.getJSON();" +
+                                  "\nconst dataTxResult = await Waves.API.Node.transactions.rawBroadcast(dataTxJSON);"
                               }</SyntaxHighlighter>
                           </Grid>
                       </ExpansionPanelDetails>

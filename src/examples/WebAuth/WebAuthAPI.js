@@ -201,7 +201,48 @@ const dataByteArray = stringToByteArray(signedData)
 
 // check validity of the signature
 Waves.crypto.isValidTransactionSignature(dataByteArray, signature, publicKey);
-`
+`,
+      python: `
+import axolotl_curve25519 as curve
+import base58
+from urllib.parse import urlparse, parse_qs
+
+
+def str_with_length(string_data):
+    string_length_bytes = len(string_data).to_bytes(2, byteorder='big')
+    string_bytes = string_data.encode('utf-8')
+    return string_length_bytes + string_bytes
+
+
+def signed_data(host, data):
+    prefix = 'WavesWalletAuthentication'
+    return str_with_length(prefix) + str_with_length(host) + str_with_length(data)
+
+
+def verify(public_key, signature, message):
+    public_key_bytes = base58.b58decode(public_key)
+    signature_bytes = base58.b58decode(signature)
+    if curve.verifySignature(public_key_bytes, message, signature_bytes) is 0:
+        return True
+    return False
+
+
+redirected_url = 'https://demo.wavesplatform.com/web-auth-success/...'
+parsed_url = urlparse(redirected_url)
+parsed_query = parse_qs(parsed_url.query)
+
+address = parsed_query['a'][0]
+pub_key = parsed_query['p'][0]
+signature = parsed_query['s'][0]
+data_string = parsed_query['d'][0]
+host_string = parsed_url.netloc
+message_bytes = signed_data(host_string, data_string)
+
+print('Address =', address)
+print('Public key =', pub_key)
+print('Signed Data =', message_bytes)
+print('Signature =', signature)
+print('Verified =', verify(pub_key, signature, message_bytes))`
     };
     
     
@@ -385,7 +426,10 @@ Waves.crypto.isValidTransactionSignature(dataByteArray, signature, publicKey);
                     <SyntaxHighlighter justify="left" language="javascript" customStyle={{ 'textAlign': 'left' }}
                                        style={docco}>{codeSnippets.javascript}</SyntaxHighlighter>
                   </TabContainer>}
-                  {this.selectedCodeExample === 1 && <TabContainer>...</TabContainer>}
+                  {this.selectedCodeExample === 1 && <TabContainer>
+                      <SyntaxHighlighter justify="left" language="python" customStyle={{ 'textAlign': 'left' }}
+                                         style={docco}>{codeSnippets.python}</SyntaxHighlighter>
+                  </TabContainer>}
                   {this.selectedCodeExample === 2 && <TabContainer>...</TabContainer>}
                   {this.selectedCodeExample === 3 && <TabContainer>...</TabContainer>}
                 </CardContent>
