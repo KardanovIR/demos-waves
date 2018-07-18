@@ -24,6 +24,7 @@ import TwitterUsersList from "../examples/Twitter/TwitterUsersList";
 import TwitterUser from "../examples/Twitter/TwitterUser";
 import TwitterFeed from "../examples/Twitter/TwitterFeed";
 import Console from "../examples/Console/Console";
+import Metamask from "../examples/Metamask/Metamask";
 
 const drawerWidth = 250;
 
@@ -267,6 +268,10 @@ class RootContainer extends React.Component {
 							
 							<Route exact path='/example/console' render={(props) => (
 								<Console {...props} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							<Route exact path='/example/metamask' render={(props) => (
+								<Metamask {...props} showSnackbar={this.showSnackbar}/>
 							)}/>
 							
 							
