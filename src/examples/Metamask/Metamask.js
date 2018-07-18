@@ -259,6 +259,7 @@ Waves.API.Node.addresses.get()
                                         label="Amount"
                                         defaultValue={this.state.amount}
                                         className={classes.textField}
+                                        onChange={this.handleChange('amount')}
                                         fullWidth
                                         margin="normal"
                                       />
@@ -267,6 +268,7 @@ Waves.API.Node.addresses.get()
                                         label="Recipient"
                                         defaultValue={this.state.recipient}
                                         className={classes.textField}
+                                        onChange={this.handleChange('recipient')}
                                         fullWidth
                                         margin="normal"
                                       />
@@ -275,6 +277,7 @@ Waves.API.Node.addresses.get()
                                         label="Fee"
                                         defaultValue={this.state.fee}
                                         className={classes.textField}
+                                        onChange={this.handleChange('fee')}
                                         fullWidth
                                         margin="normal"
                                       />
