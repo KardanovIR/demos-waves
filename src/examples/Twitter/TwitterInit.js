@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import MarkdownRenderer from 'react-markdown-renderer';
 
 
-const WavesAPI = require('@waves/waves-api');
+const WavesAPI = require('waves-api');
 const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
 
 const styles = theme => ({
