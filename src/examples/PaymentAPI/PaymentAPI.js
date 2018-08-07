@@ -15,7 +15,7 @@ import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogContentText from "material-ui/Dialog/DialogContentText";
 
 
-const WavesAPI = require('@waves/waves-api');
+const WavesAPI = require('waves-api');
 
 const styles = theme => ({
 	card: {
