@@ -44,4 +44,4 @@ if (module.hot) {
 }
 
 render();
-registerServiceWorker();
+// registerServiceWorker();
