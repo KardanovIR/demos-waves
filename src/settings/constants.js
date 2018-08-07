@@ -3,7 +3,7 @@ let config = require('./config.json');
 const centralAddressSeed = process.env.TWITTER_SEED;
 
 let _config;
-const WavesAPI = require('waves-api');
+const WavesAPI = require('@waves/waves-api');
 const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
 
 if (centralAddressSeed) {

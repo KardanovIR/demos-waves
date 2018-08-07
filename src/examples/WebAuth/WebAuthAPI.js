@@ -112,7 +112,7 @@ class WebAuthAPI extends React.Component {
     let params = Object.keys(linkParts).map((key) => {
       return `${key}=${linkParts[key]}`;
     }).join('&');
-    return `https://beta.wavesplatform.com#gateway/auth?${params}`;
+    return `https://client.wavesplatform.com#gateway/auth?${params}`;
   };
   
   handleChange = name => event => {
@@ -254,7 +254,7 @@ print('Verified =', verify(pub_key, signature, message_bytes))`
               <CardContent>
                 <Typography>If you want to authorize a user in your service by means of his Waves account, here's the
                   solution.
-                  In general, you should redirect the user to the official Waves Client (https://beta.wavesplatform.com/
+                  In general, you should redirect the user to the official Waves Client (https://client.wavesplatform.com/
                   —
                   to be
                   changed later) with certain query parameters including some arbitrary data for him to

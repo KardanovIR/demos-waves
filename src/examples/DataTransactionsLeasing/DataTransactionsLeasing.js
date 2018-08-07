@@ -117,7 +117,7 @@ class WebAuthAPI extends React.Component {
     let params = Object.keys(linkParts).map((key) => {
       return `${key}=${linkParts[key]}`;
     }).join('&');
-    return `https://beta.wavesplatform.com#gateway/auth?${params}`;
+    return `https://client.wavesplatform.com#gateway/auth?${params}`;
   };
   
   handleChange = name => event => {

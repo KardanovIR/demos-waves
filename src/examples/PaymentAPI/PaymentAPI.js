@@ -15,7 +15,7 @@ import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogContentText from "material-ui/Dialog/DialogContentText";
 
 
-const WavesAPI = require('waves-api');
+const WavesAPI = require('@waves/waves-api');
 
 const styles = theme => ({
 	card: {
@@ -81,7 +81,7 @@ class WebAuthAPI extends React.Component {
 	}
 	
 	getPaymentLink = () => {
-		return `https://beta.wavesplatform.com/#send/${this.state.assetId}?recipient=${this.state.recipient}&amount=${this.state.amount}&referrer=${this.state.referrer}${this.state.strict ? '&strict' : ''}`;
+		return `https://client.wavesplatform.com/#send/${this.state.assetId}?recipient=${this.state.recipient}&amount=${this.state.amount}&referrer=${this.state.referrer}${this.state.strict ? '&strict' : ''}`;
 	};
 	
 	handleChange = name => event => {
