@@ -9,7 +9,7 @@ import {
 	Avatar,
   withStyles,
 	CardHeader,
-} from "material-ui";
+} from "@material-ui/core";
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/styles/hljs';
 import constants from "../../settings/constants";

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import PersistentDrawer from "./Components/RootContainer";
 import theme from './settings/theme';
-import { MuiThemeProvider } from "material-ui";
+import { MuiThemeProvider } from "@material-ui/core";
 
 
 const classesList = {

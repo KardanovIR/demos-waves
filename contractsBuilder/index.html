@@ -1,0 +1,376 @@
+<html>
+<head>
+  <title>Contract builder example</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+      var mxBasePath = './mx';
+
+      var urlParams = (function (url) {
+          var result = new Object();
+          var params = window.location.search.slice(1).split('&');
+
+          for (var i = 0; i < params.length; i++) {
+              idx = params[i].indexOf('=');
+
+              if (idx > 0) {
+                  result[params[i].substring(0, idx)] = params[i].substring(idx + 1);
+              }
+          }
+
+          return result;
+      })(window.location.href);
+
+      var mxLanguage = urlParams['lang'];
+  </script>
+  <script type="text/javascript" src="./mx/mxClient.js"></script>
+  <script type="text/javascript" src="mx/app.js"></script>
+
+  <style>
+    text {
+      font-size: 14px;
+    }
+  </style>
+
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script>
+      class JsonCodec extends mxObjectCodec {
+          constructor() {
+              super((value) => {
+              });
+          }
+
+          encode(value) {
+              const xmlDoc = mxUtils.createXmlDocument();
+              const newObject = xmlDoc.createElement("Object");
+              for (let prop in value) {
+                  newObject.setAttribute(prop, value[prop]);
+              }
+              return newObject;
+          }
+
+          decode(model) {
+              return Object.keys(model.cells).map(
+                (iCell) => {
+                    const currentCell = model.getCell(iCell);
+                    return (currentCell.value !== undefined) ? currentCell : null;
+                }
+              ).filter((item) => (item !== null));
+          }
+      }
+  </script>
+  <script type="text/javascript">
+
+      window.__STATE = {
+          constants: {
+              "adminPublicKey": "6NoPZgZcsi7hZNV9vQEvaLnAC2H73R4SX8AeUsUuqxqR",
+              "automationPublicKey": "66dfqHXdWG4iryW2JuUJDYgX8EjDjWSAidvhMMgRccbS",
+              "inalPublicKey": "8UzZpKnPT2TGzJzEWwjekc2KpixzrvymaVeD1799zddX",
+              "alexeyPublicKey": "CV77nWucWLDPUzLjggcbeYgzSBCfSad5UBpjSeZcq9x3",
+              "mashaPublicKey": "HsAkRYsT2ip7a8Rk7zcBteDQRsZbzrVJvndpjLV6fxAg",
+              "sashaPublicKey": "6Eri2iob3MGnFfSTyFXWjhkrF7VkzVU3FHgQ9ZFvnu89"
+          }
+      };
+
+
+      /******************************************
+       Utils
+       ********************************************/
+
+      function stringifyWithoutCircular(json) {
+          return JSON.stringify(
+            json,
+            (key, value) => {
+                if ((key === 'parent' || key == 'source' || key == 'target') && value !== null) {
+                    return value.id;
+                } else if (key === 'value' && value !== null && value.localName) {
+                    let results = {};
+                    Object.keys(value.attributes).forEach(
+                      (attrKey) => {
+                          const attribute = value.attributes[attrKey];
+                          results[attribute.nodeName] = attribute.nodeValue;
+                      }
+                    )
+                    return results;
+                }
+                return value;
+            },
+            4
+          );
+      }
+
+      function modelToPride(model) {
+          model = JSON.parse(model);
+          console.log(model);
+          const resultPride = {
+              key: "demoState",
+              states: [],
+              variables: [],
+              conditions: []
+          };
+          // add states
+          model.forEach(element => {
+              if (element.vertex === 1) {
+                  resultPride.states.push({
+                      name: element.value.label,
+                      description: element.value.href
+                  });
+              }
+          });
+      }
+
+
+      // Program starts here. The document.onLoad executes the
+      // createEditor function with a given configuration.
+      // In the config file, the mxEditor.onInit method is
+      // overridden to invoke this global function as the
+      // last step in the editor constructor.
+      function onInit(editor) {
+          // Enables rotation handle
+          mxVertexHandler.prototype.rotationEnabled = true;
+
+          // Enables guides
+          mxGraphHandler.prototype.guidesEnabled = true;
+
+          // Alt disables guides
+          mxGuide.prototype.isEnabledForEvent = function (evt) {
+              return !mxEvent.isAltDown(evt);
+          };
+
+          // Enables snapping waypoints to terminals
+          mxEdgeHandler.prototype.snapToTerminals = true;
+
+          // Defines an icon for creating new connections in the connection handler.
+          // This will automatically disable the highlighting of the source vertex.
+          mxConnectionHandler.prototype.connectImage = new mxImage('images/connector.gif', 16, 16);
+
+          // Enables connections in the graph and disables
+          // reset of zoom and translate on root change
+          // (ie. switch between XML and graphical mode).
+          editor.graph.setConnectable(true);
+
+          // Clones the source if new connection has no target
+          editor.graph.connectionHandler.setCreateTarget(true);
+
+          // Defines a new action to switch between
+          // XML and graphical display
+          var textNode = document.getElementById('xml');
+          var graphNode = editor.graph.container;
+
+          var funct = function (editor) {
+              graphNode.style.display = '';
+
+              if (textNode.value != textNode.originalValue) {
+                  var doc = mxUtils.parseXml(textNode.value);
+                  var dec = new mxCodec(doc);
+                  dec.decode(doc.documentElement, editor.graph.getModel());
+              }
+
+              textNode.originalValue = null;
+
+              // Makes sure nothing is selected in IE
+              if (mxClient.IS_IE) {
+                  mxUtils.clearSelection();
+              }
+
+              textNode.style.display = 'none';
+
+              // Moves the focus back to the graph
+              editor.graph.container.focus();
+          };
+
+          // STYLING
+          let style = [];
+          style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
+          style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+          style[mxConstants.STYLE_STROKECOLOR] = 'gray';
+          style[mxConstants.STYLE_ROUNDED] = true;
+          style[mxConstants.STYLE_FILLCOLOR] = '#EEEEEE';
+          style[mxConstants.STYLE_GRADIENTCOLOR] = 'white';
+          style[mxConstants.STYLE_FONTCOLOR] = 'black';
+          style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+          style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+          style[mxConstants.STYLE_FONTSIZE] = '12';
+          style[mxConstants.STYLE_FONTSTYLE] = 1;
+          editor.graph.getStylesheet().putDefaultVertexStyle(style);
+
+          // Creates the default style for edges
+          style = editor.graph.getStylesheet().getDefaultEdgeStyle();
+          style[mxConstants.STYLE_STROKECOLOR] = '#0C0C0C';
+          style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'white';
+          style[mxConstants.STYLE_EDGE] = mxEdgeStyle.ElbowConnector;
+          style[mxConstants.STYLE_ROUNDED] = true;
+          style[mxConstants.STYLE_FONTCOLOR] = 'black';
+          style[mxConstants.STYLE_FONTSIZE] = '10';
+          editor.graph.getStylesheet().putDefaultEdgeStyle(style);
+
+          var selectedCell;
+
+          var keyHandler = new mxDefaultKeyHandler(editor);
+          keyHandler.bindAction(46, 'delete');
+
+          editor.graph.addMouseListener(
+            {
+                mouseUp: function (sender, evt) {
+                    if (evt.state && evt.state.cell) {
+                        selectedCell = evt.state.cell;
+                    }
+                    console.log(evt.state);
+                    if (evt.state && evt.state.style) {
+                        let postData = {};
+                        if (evt.state.style.shape === 'rectangle') {
+                            postData = {
+                                origin: 'mx',
+                                type: 'click',
+                                object: {
+                                    shape: evt.state.style.shape,
+                                    name: evt.state.text.value,
+                                    description: ''
+                                }
+                            };
+                        } else if (evt.state.style.shape === 'connector') {
+                            postData = {
+                                origin: 'mx',
+                                type: 'click',
+                                object: {
+                                    shape: evt.state.style.shape,
+                                    name: evt.state.text ? evt.state.text.value : ''
+                                }
+                            };
+                        }
+                        window.parent.receiveMessage(postData);
+                        // window.parent.postMessage(postData, "*");
+                    }
+                    if (evt.state && evt.state.style.shape === 'connector') {
+                        // editor.graph.model.setValue(selectedCell, $(this).val());
+                    }
+                },
+                mouseMove: function () {
+                },
+                mouseDown: function () {
+                },
+            });
+
+
+          // Create select actions in page
+          var node = document.getElementById('zoomActions');
+          mxUtils.write(node, 'Zoom: ');
+          mxUtils.linkAction(node, 'In', editor, 'zoomIn');
+          mxUtils.write(node, ', ');
+          mxUtils.linkAction(node, 'Out', editor, 'zoomOut');
+          mxUtils.write(node, ', ');
+          mxUtils.linkAction(node, 'Actual', editor, 'actualSize');
+          mxUtils.write(node, ', ');
+          mxUtils.linkAction(node, 'Fit', editor, 'fit');
+
+
+          //    get json model
+          $('#to-json').on('click', function () {
+              const encoder = new JsonCodec();
+              const jsonModel = encoder.decode(editor.graph.getModel());
+              modelToPride(stringifyWithoutCircular(jsonModel));
+          });
+
+          window.receiveMessage = function (data) {
+              console.log(data);
+              if (data && data.action === 'changeSelectedItemName') {
+                  editor.graph.model.setValue(selectedCell, data.value);
+              }
+              if (data && data.action === 'removeSelected') {
+                  editor.graph.model.remove(selectedCell);
+              }
+          }
+      }
+
+      window.onbeforeunload = function () {
+          return mxResources.get('changesLost');
+      };
+  </script>
+</head>
+<body onload="createEditor('config/diagrameditor.xml');">
+
+<div id="mainActions" style="display:none">
+</div>
+<div id="selectActions" style="display: none;">
+</div>
+<table border="0" width="95%" height="90%">
+  <tr>
+    <td id="toolbar" style="display: none;" valign="top">
+      <!-- Toolbar Here -->
+    </td>
+    <td valign="top" style="border-width:1px;border-style:solid;border-color:black;">
+      <div id="graph" tabindex="-1"
+           style="position:relative;height:100%;width:100%;overflow:hidden;cursor:default;">
+        <!-- Graph Here -->
+        <center id="splash" style="padding-top:230px;">
+          <img src="images/loading.gif">
+        </center>
+      </div>
+      <textarea id="xml" style="height:480px;width:684px;display:none;border-style:none;"></textarea>
+    </td>
+  </tr>
+</table>
+<div id="zoomActions" style="width:80%;padding-left:54px;padding-top:4px;">
+</div>
+
+<script>
+    /******************************************************************
+     Core
+     ******************************************************************/
+
+
+    class GraphX {
+        constructor(container) {
+            if (!mxClient.isBrowserSupported()) {
+                return mxUtils.error('Browser is not supported!', 200, false);
+            }
+            this._graph = new mxGraph(container);
+            this._graph.setConnectable(true);
+            this._graph.setAllowDanglingEdges(false);
+            new mxRubberband(this._graph); // Enables rubberband selection
+
+            this.labelDisplayOveride();
+            this.styling();
+        }
+
+
+        getJsonModel() {
+
+        }
+
+        render(dataModel) {
+            const jsonEncoder = new JsonCodec();
+
+            this._vertices = {};
+            this._dataModel = dataModel;
+
+            const parent = this._graph.getDefaultParent();
+            this._graph.getModel().beginUpdate(); // Adds cells to the model in a single step
+            try {
+
+                this._dataModel.graph.map(
+                  (node) => {
+                      if (node.value) {
+                          if (typeof node.value === "object") {
+                              const xmlNode = jsonEncoder.encode(node.value);
+                              this._vertices[node.id] = this._graph.insertVertex(parent, null, xmlNode, node.geometry.x, node.geometry.y, node.geometry.width, node.geometry.height);
+                          } else if (node.value === "Edge") {
+                              this._graph.insertEdge(parent, null, 'Edge', this._vertices[node.source], this._vertices[node.target])
+                          }
+                      }
+                  }
+                );
+
+            } finally {
+                this._graph.getModel().endUpdate(); // Updates the display
+            }
+        }
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -9,7 +9,7 @@ import {
   withStyles,
   TextField,
   CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
-} from "material-ui";
+} from "@material-ui/core";
 import { copyToClipboard } from '../../Components/CopyToClipboard';
 import constants from '../../settings/constants';
 import { Link } from "react-router-dom";

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {Drawer, withStyles, AppBar} from 'material-ui';
-import Toolbar from 'material-ui/Toolbar';
-import List from 'material-ui/List';
-import Typography from 'material-ui/Typography';
-import Divider from 'material-ui/Divider';
-import IconButton from 'material-ui/IconButton';
+import {Drawer, withStyles, AppBar} from '@material-ui/core';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Link } from 'react-router-dom'
 import WebAuthAPI from "../examples/WebAuth/WebAuthAPI";
 import { Route } from "react-router";
 import WebAuthAPISuccess from "../examples/WebAuth/WebAuthAPISuccess";
-import { FormControlLabel, Snackbar, Switch } from "material-ui";
+import { FormControlLabel, Snackbar, Switch } from "@material-ui/core";
 import PaymentAPI from "../examples/PaymentAPI/PaymentAPI";
 import PaymentAPISuccess from "../examples/PaymentAPI/PaymentAPISuccess";
 import TwitterInit from "../examples/Twitter/TwitterInit";
@@ -25,6 +25,7 @@ import TwitterUser from "../examples/Twitter/TwitterUser";
 import TwitterFeed from "../examples/Twitter/TwitterFeed";
 import Console from "../examples/Console/Console";
 import Metamask from "../examples/Metamask/Metamask";
+import ContractBuilder from "../examples/ContractBuilder/ContractBuilder";
 
 const drawerWidth = 250;
 
@@ -272,6 +273,10 @@ class RootContainer extends React.Component {
 							
 							<Route exact path='/example/metamask' render={(props) => (
 								<Metamask {...props} showSnackbar={this.showSnackbar}/>
+							)}/>
+							
+							<Route exact path='/example/contract-builder' render={(props) => (
+								<ContractBuilder {...props} showSnackbar={this.showSnackbar}/>
 							)}/>
 							
 							

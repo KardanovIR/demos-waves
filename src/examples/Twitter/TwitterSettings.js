@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from "material-ui/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -15,10 +15,10 @@ import {
   CardActions,
   Dialog,
   DialogActions,
-} from "material-ui";
+} from "@material-ui/core";
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/styles/hljs';
-import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
+import Stepper, { Step, StepLabel } from '@material-ui/core/Stepper';
 import constants from "../../settings/constants";
 import { defaultAvatar, getAvatar, makeId } from './Helpers';
 import DataTransaction from './DataTransaction';

@@ -19,7 +19,7 @@ import {
     MenuItem,
     Dialog,
     DialogContent, DialogTitle, DialogContentText, DialogActions
-} from "material-ui";
+} from "@material-ui/core";
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/styles/hljs';
 

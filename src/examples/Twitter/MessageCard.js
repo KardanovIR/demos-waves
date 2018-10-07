@@ -10,7 +10,7 @@ import {
 	Dialog, DialogActions, DialogContent, DialogTitle,
 	IconButton, LinearProgress, Slide, TextField,
 	Typography
-} from "material-ui";
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Linkify from 'react-linkify';
 import ShareIcon from '@material-ui/icons/Share';

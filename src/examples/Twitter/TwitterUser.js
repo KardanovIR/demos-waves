@@ -9,7 +9,7 @@ import {
 	Avatar,
   withStyles,
 	CardHeader,
-} from "material-ui";
+} from "@material-ui/core";
 import TwitterUserPosts from './TwitterUserPosts';
 import FollowButton from "./FollowButton";
 import { tweetsCompare } from "./Helpers";

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {
   CircularProgress, Grid, Typography,
   withStyles
-} from "material-ui";
+} from "@material-ui/core";
 
 
 class WebAuthAPISuccess extends React.Component {

@@ -12,8 +12,8 @@ import {
   FormControlLabel,
   Table,
   TableHead, TableRow, TableCell, TableBody, AppBar, Tabs, Tab
-} from "material-ui";
-import Switch from "material-ui/Switch/Switch";
+} from "@material-ui/core";
+import Switch from "@material-ui/core/Switch/Switch";
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/styles/hljs';
 

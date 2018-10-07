@@ -4,7 +4,7 @@ import {
 	Typography,
   withStyles,
 	Grid,
-} from "material-ui";
+} from "@material-ui/core";
 
 const styles = theme => ({
 	card: {
