@@ -63,18 +63,6 @@
   </script>
   <script type="text/javascript">
 
-      window.__STATE = {
-          constants: {
-              "adminPublicKey": "6NoPZgZcsi7hZNV9vQEvaLnAC2H73R4SX8AeUsUuqxqR",
-              "automationPublicKey": "66dfqHXdWG4iryW2JuUJDYgX8EjDjWSAidvhMMgRccbS",
-              "inalPublicKey": "8UzZpKnPT2TGzJzEWwjekc2KpixzrvymaVeD1799zddX",
-              "alexeyPublicKey": "CV77nWucWLDPUzLjggcbeYgzSBCfSad5UBpjSeZcq9x3",
-              "mashaPublicKey": "HsAkRYsT2ip7a8Rk7zcBteDQRsZbzrVJvndpjLV6fxAg",
-              "sashaPublicKey": "6Eri2iob3MGnFfSTyFXWjhkrF7VkzVU3FHgQ9ZFvnu89"
-          }
-      };
-
-
       /******************************************
        Utils
        ********************************************/
@@ -193,7 +181,6 @@
           style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
           style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
           style[mxConstants.STYLE_FONTSIZE] = '12';
-          style[mxConstants.STYLE_FONTSTYLE] = 1;
           editor.graph.getStylesheet().putDefaultVertexStyle(style);
 
           // Creates the default style for edges
@@ -247,10 +234,8 @@
                         // editor.graph.model.setValue(selectedCell, $(this).val());
                     }
                 },
-                mouseMove: function () {
-                },
-                mouseDown: function () {
-                },
+                mouseMove: function () {},
+                mouseDown: function () {}
             });
 
 
@@ -266,13 +251,6 @@
           mxUtils.linkAction(node, 'Fit', editor, 'fit');
 
 
-          //    get json model
-          $('#to-json').on('click', function () {
-              const encoder = new JsonCodec();
-              const jsonModel = encoder.decode(editor.graph.getModel());
-              modelToPride(stringifyWithoutCircular(jsonModel));
-          });
-
           window.receiveMessage = function (data) {
               console.log(data);
               if (data && data.action === 'changeSelectedItemName') {
@@ -281,6 +259,40 @@
               if (data && data.action === 'removeSelected') {
                   editor.graph.model.remove(selectedCell);
               }
+          }
+
+          window.getModelJson = function(){
+              const encoder = new JsonCodec();
+              const jsonModel = encoder.decode(editor.graph.getModel());
+              return stringifyWithoutCircular(jsonModel);
+          }
+
+          window.modelFromJson = function(dataModel){
+              const jsonEncoder = new JsonCodec();
+
+              const _vertices = {};
+              const _dataModel = dataModel;
+
+              const parent = editor.graph.getDefaultParent();
+              editor.graph.getModel().beginUpdate(); // Adds cells to the model in a single step
+              try {
+                  _dataModel.map(
+                      (node) => {
+                          if (node.value) {
+                              if (typeof node.value === "object") {
+                                  const xmlNode = jsonEncoder.encode(node.value);
+                                  _vertices[node.id] = editor.graph.insertVertex(parent, null, xmlNode, node.geometry.x, node.geometry.y, node.geometry.width, node.geometry.height);
+                              } else if (node.value === "Edge") {
+                                  editor.graph.insertEdge(parent, null, 'Edge', _vertices[node.source], _vertices[node.target])
+                              }
+                          }
+                      }
+                  );
+
+              } finally {
+                  editor.graph.getModel().endUpdate(); // Updates the display
+              }
+
           }
       }
 
@@ -314,63 +326,5 @@
 </table>
 <div id="zoomActions" style="width:80%;padding-left:54px;padding-top:4px;">
 </div>
-
-<script>
-    /******************************************************************
-     Core
-     ******************************************************************/
-
-
-    class GraphX {
-        constructor(container) {
-            if (!mxClient.isBrowserSupported()) {
-                return mxUtils.error('Browser is not supported!', 200, false);
-            }
-            this._graph = new mxGraph(container);
-            this._graph.setConnectable(true);
-            this._graph.setAllowDanglingEdges(false);
-            new mxRubberband(this._graph); // Enables rubberband selection
-
-            this.labelDisplayOveride();
-            this.styling();
-        }
-
-
-        getJsonModel() {
-
-        }
-
-        render(dataModel) {
-            const jsonEncoder = new JsonCodec();
-
-            this._vertices = {};
-            this._dataModel = dataModel;
-
-            const parent = this._graph.getDefaultParent();
-            this._graph.getModel().beginUpdate(); // Adds cells to the model in a single step
-            try {
-
-                this._dataModel.graph.map(
-                  (node) => {
-                      if (node.value) {
-                          if (typeof node.value === "object") {
-                              const xmlNode = jsonEncoder.encode(node.value);
-                              this._vertices[node.id] = this._graph.insertVertex(parent, null, xmlNode, node.geometry.x, node.geometry.y, node.geometry.width, node.geometry.height);
-                          } else if (node.value === "Edge") {
-                              this._graph.insertEdge(parent, null, 'Edge', this._vertices[node.source], this._vertices[node.target])
-                          }
-                      }
-                  }
-                );
-
-            } finally {
-                this._graph.getModel().endUpdate(); // Updates the display
-            }
-        }
-    }
-
-
-</script>
-
 </body>
 </html>

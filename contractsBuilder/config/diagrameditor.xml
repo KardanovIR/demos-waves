@@ -32,7 +32,7 @@
             </Container>
         </add>
         <add as="rectangle">
-            <Rect label="Rectangle" href="">
+            <Rect label="New state" href="">
                 <mxCell vertex="1">
                     <mxGeometry as="geometry" width="80" height="40"/>
                 </mxCell>
@@ -108,10 +108,8 @@
 				var style = cell.getStyle();
 			
 				return ((label != null) ? ('<b>' + label +
-						'</b> (' + cell.getId() + ')<br>') : '') +
-						((style != null) ? ('<br>Style: ' + style + '<br>') : '') +
-						'Connections: ' + cell.getEdgeCount()+
-						'<br>Children: ' + cell.getChildCount();
+						'</b> (id=' + cell.getId() + ')<br>') : '') +
+						'Possible transitions: ' + cell.getEdgeCount();
 			}
 		]]></add>
         <add as="convertValueToString"><![CDATA[
@@ -128,9 +126,9 @@
                 <add as="align" value="left"/>
                 <add as="verticalAlign" value="top"/>
                 <add as="shadow" value="0"/>
-                <add as="strokeColor" value="none"/>
-                <add as="fillColor" value="none"/>
-                <add as="gradientColor" value="none"/>
+                <add as="strokeColor" value="gray"/>
+                <add as="fillColor" value="#EEEEEE"/>
+                <add as="gradientColor" value="white"/>
             </add>
             <add as="defaultVertex" extend="text">
                 <add as="shape" value="rectangle"/>
@@ -283,6 +281,11 @@
                 <Layer label="Default Layer" id="1">
                     <mxCell parent="0"/>
                 </Layer>
+                <Rect label="Init" href="" id="2">
+                    <mxCell vertex="1" parent="1">
+                        <mxGeometry x="310" y="220" width="80" height="40" as="geometry"/>
+                    </mxCell>
+                </Rect>
             </root>
         </mxGraphModel>
     </mxGraph>

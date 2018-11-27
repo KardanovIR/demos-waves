@@ -1,18 +1,10 @@
-const fs = require('fs');
-const PrideGenerator = require('./PrideGenerator');
+import PrideToContract from './PrideToContract'
 
 
 class PrideParser {
-    
-    // prideContent;
-    // pridePlainText;
-    // prideDefinition;
-    
+
     constructor(data) {
-        if (data.filename) {
-            this.pridePlainText = fs.readFileSync(data.filename, { encoding: 'utf8' });
-            this.prideContent = JSON.parse(this.pridePlainText);
-        } else if (data.content) {
+        if (data.content) {
             this.prideContent = data.content;
         } else if (data.url) {
             //TODO: add url support
@@ -20,51 +12,62 @@ class PrideParser {
         this.prideDefinition = JSON.parse(this.inlineVariables());
         this.prideDefinition = this.inlineConditions();
         if (data.debug) {
-            fs.writeFile('debug.json', JSON.stringify(this.prideDefinition), 'utf8');
+            console.log(this.prideDefinition);
         }
     }
-    
+
     static escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
     }
-    
-    
+
+
     inlineVariables() {
-        let contract = this.pridePlainText;
+        let contract = JSON.stringify(this.prideContent);
         this.prideContent.variables.forEach((variable) => {
-            const escapedString = PrideParser.escapeRegExp(`variables\('${variable.key}'\)`);
-            const regExp = new RegExp(escapedString, 'igm');
-            contract = contract.replace(regExp, variable.value);
+            const fullRef = PrideParser.escapeRegExp(`variables\('${variable.key}'\)`);
+            const shortRef = PrideParser.escapeRegExp(`var:\('${variable.key}'\)`);
+            const fullRegExp = new RegExp(fullRef, 'igm');
+            contract = contract.replace(fullRegExp, variable.value);
+            const shortRegExp = new RegExp(shortRef, 'igm');
+            contract = contract.replace(shortRegExp, variable.value);
         });
         return contract;
     };
-    
+
     inlineConditions() {
         const regExp = /conditions\('(.*?)'\)/gmi;
         const definitionCopy = Object.assign({}, this.prideDefinition);
         definitionCopy.states.forEach((state, stateIndex) => {
-            
+
             state.transitions.forEach((transition, transitionIndex) => {
                 let _when = [];
-                transition.when.forEach((condition) => {
+                transition.when.forEach((rule) => {
                     // already inlined
-                    if (typeof condition === 'object') {
-                        _when.push(condition);
+                    if (typeof rule === 'object') {
+                        _when.push(rule);
                         return true;
                     }
-                    
+
+                    console.log('WhenStatementCondition:', rule);
+
                     // inline condition('*')
                     let matches;
                     let conditionExpanded = false;
-                    while ((matches = regExp.exec(condition)) !== null) {
+                    while ((matches = regExp.exec(rule)) !== null) {
                         const conditionName = matches[1];
-                        _when.push(definitionCopy.conditions[conditionName]);
-                        conditionExpanded = true;
+                        console.log('ConditionName:', conditionName);
+                        definitionCopy.conditions.forEach(condition => {
+                            if (condition.name === conditionName){
+                                _when.push(condition);
+                                conditionExpanded = true;
+                                return false
+                            }
+                        });
                     }
-                    
+
                     // throw an error if not object of function call
                     if (conditionExpanded) return true;
-                    throw new Error('Condition is not recognized: ' + JSON.stringify(condition));
+                    throw new Error('Condition is not recognized: ' + JSON.stringify(rule));
                 });
                 definitionCopy.states[stateIndex].transitions[transitionIndex].when = _when;
             });
@@ -76,16 +79,18 @@ class PrideParser {
     getPlainText() {
         return this.pridePlainText;
     }
-    
+
     getDefinition() {
         return this.prideDefinition;
     }
-    
+
     generateContract() {
-        return new PrideGenerator(this.prideDefinition).generateContract();
+
+        const prideToContract = new PrideToContract(this.prideDefinition);
+        return prideToContract.generateContract();
     }
-    
+
 }
 
 
-module.exports = PrideParser;
+export default PrideParser;
