@@ -7,7 +7,7 @@ import {
   CardMedia,
   withStyles,
   Typography
-} from "material-ui";
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Linkify from 'react-linkify';
 import TwitterUserPosts from "./TwitterUserPosts";

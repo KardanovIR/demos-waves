@@ -17,7 +17,7 @@ import {
     Divider,
     Drawer,
     ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails,
-} from "material-ui";
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import CloseIcon from '@material-ui/icons/Close'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'

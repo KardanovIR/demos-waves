@@ -1,0 +1,111 @@
+{
+  "key": "demoStates",
+  "states": [
+    {
+      "name": "initial",
+      "description": "First step in our flow",
+      "transitions": [
+        {
+          "to": "managerApproving",
+          "when": [
+            "conditions('automationSign')"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "managerApproving",
+      "description": "In this state our task will wait for approving by manager",
+      "transitions": [
+        {
+          "to": "managerApproving",
+          "when": [
+            "conditions('managerSign')",
+            "conditions('CEOSign')"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "financeDirectorApproving",
+      "description": "Finance Director Approving",
+      "transitions": [
+        {
+          "to": "financeDirectorApproved",
+          "when": [
+            "conditions('financeDirectorSign')",
+            "conditions('weatherIsGood')"
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "key": "adminPublicKey",
+      "value": "6NoPZgZcsi7hZNV9vQEvaLnAC2H73R4SX8AeUsUuqxqR"
+    },
+    {
+      "key": "automationPublicKey",
+      "value": "66dfqHXdWG4iryW2JuUJDYgX8EjDjWSAidvhMMgRccbS"
+    },
+    {
+      "key": "inalPublicKey",
+      "value": "8UzZpKnPT2TGzJzEWwjekc2KpixzrvymaVeD1799zddX"
+    },
+    {
+      "key": "alexeyPublicKey",
+      "value": "CV77nWucWLDPUzLjggcbeYgzSBCfSad5UBpjSeZcq9x3"
+    },
+    {
+      "key": "mashaPublicKey",
+      "value": "HsAkRYsT2ip7a8Rk7zcBteDQRsZbzrVJvndpjLV6fxAg"
+    },
+    {
+      "key": "sashaPublicKey",
+      "value": "6Eri2iob3MGnFfSTyFXWjhkrF7VkzVU3FHgQ9ZFvnu89"
+    }
+  ],
+  "conditions": [
+    {
+      "name": "automationSign",
+      "type": "publicKey",
+      "value": "variables('automationPublicKey')"
+    },
+    {
+      "name": "managerSign",
+      "type": "publicKey",
+      "value": "variables('alexeyPublicKey')"
+    },
+    {
+      "name": "gazpromSign",
+      "type": "publicKey",
+      "value": "variables('alexeyPublicKey')"
+    },
+    {
+      "name": "financeDirectorSign",
+      "type": "publicKey",
+      "value": "variables('mashaPublicKey')"
+    },
+    {
+      "name": "weatherIsGood",
+      "type": "data",
+      "address": "3Mz9H1UxNYLgBrD99fFVLKmN1kaGjcZpMMP",
+      "data": {
+        "comparison": ">",
+        "key": "MOSCOW/20.09.2018-16:00",
+        "value": 21
+      }
+    },
+    {
+      "name": "weatherIsGood2",
+      "type": "data",
+      "address": "3N8yQQ11s6W7wLAW62JMdZaXhYM2dyw44YL",
+      "data": {
+        "comparison": ">",
+        "key": "MOSCOW/20.09.2018-16:00",
+        "value": 21
+      }
+    }
+  ]
+}

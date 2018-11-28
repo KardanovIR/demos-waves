@@ -1,0 +1,104 @@
+{
+  "key": "demoStates",
+  "states": [
+    {
+      "name": "initial",
+      "description": "First step in our flow",
+      "transitions": [
+        {
+          "to": "managerApproving",
+          "when": [
+            {
+              "type": "publicKey",
+              "value": "66dfqHXdWG4iryW2JuUJDYgX8EjDjWSAidvhMMgRccbS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "managerApproving",
+      "description": "In this state our task will wait for approving by manager",
+      "transitions": [
+        {
+          "to": "managerApproving",
+          "when": [
+            {
+              "type": "publicKey",
+              "value": "CV77nWucWLDPUzLjggcbeYgzSBCfSad5UBpjSeZcq9x3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "financeDirectorApproving",
+      "description": "Finance Director Approving",
+      "transitions": [
+        {
+          "to": "financeDirectorApproved",
+          "when": [
+            {
+              "type": "publicKey",
+              "value": "HsAkRYsT2ip7a8Rk7zcBteDQRsZbzrVJvndpjLV6fxAg"
+            },
+            {
+              "type": "data",
+              "address": "3Mz9H1UxNYLgBrD99fFVLKmN1kaGjcZpMMP",
+              "value": {
+                "comparison": ">",
+                "MOSCOW/20.09.2018-16:00": 21
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "adminPublicKey": "6NoPZgZcsi7hZNV9vQEvaLnAC2H73R4SX8AeUsUuqxqR",
+    "automationPublicKey": "66dfqHXdWG4iryW2JuUJDYgX8EjDjWSAidvhMMgRccbS",
+    "inalPublicKey": "8UzZpKnPT2TGzJzEWwjekc2KpixzrvymaVeD1799zddX",
+    "alexeyPublicKey": "CV77nWucWLDPUzLjggcbeYgzSBCfSad5UBpjSeZcq9x3",
+    "mashaPublicKey": "HsAkRYsT2ip7a8Rk7zcBteDQRsZbzrVJvndpjLV6fxAg",
+    "sashaPublicKey": "6Eri2iob3MGnFfSTyFXWjhkrF7VkzVU3FHgQ9ZFvnu89"
+  },
+  "conditions": {
+    "automationSign": {
+      "type": "publicKey",
+      "value": "66dfqHXdWG4iryW2JuUJDYgX8EjDjWSAidvhMMgRccbS"
+    },
+    "managerSign": {
+      "type": "publicKey",
+      "value": "CV77nWucWLDPUzLjggcbeYgzSBCfSad5UBpjSeZcq9x3"
+    },
+    "financeDirectorSign": {
+      "type": "publicKey",
+      "value": "HsAkRYsT2ip7a8Rk7zcBteDQRsZbzrVJvndpjLV6fxAg"
+    },
+    "weatherIsGood": {
+      "type": "data",
+      "address": "3Mz9H1UxNYLgBrD99fFVLKmN1kaGjcZpMMP",
+      "value": {
+        "comparison": ">",
+        "MOSCOW/20.09.2018-16:00": 21
+      }
+    },
+    "weatherIsGood2": {
+      "type": "data",
+      "address": "3N8yQQ11s6W7wLAW62JMdZaXhYM2dyw44YL",
+      "value": {
+        "comparison": ">=",
+        "MOSCOW/20.09.2018-16:00": 13
+      }
+    }
+  },
+  "dummyData": {
+    "automation": "mystery hope rain gain medal roast rack length purpose parade cake tank switch aware symbol",
+    "admin": "noble rural royal pelican ten rookie album table attack learn enough bird expose athlete behind",
+    "inal": "caution believe pulse stool provide album entire board fiscal alert great inform amateur oval deputy",
+    "alexey": "like voyage cousin early tiny green great mountain help someone need ladder day robot camp",
+    "masha": "fee cactus cart settle toy address gentle output level fall explain surprise mutual apology wire",
+    "sasha": "appear salon chronic leave light reflect myth tag clarify argue trophy latin dog diamond dwarf"
+  }
+}

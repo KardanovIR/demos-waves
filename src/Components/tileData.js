@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -67,6 +67,14 @@ export const toolsItems = (
 					<WebAssetIcon/>
 				</ListItemIcon>
 				<ListItemText primary="Console"/>
+			</ListItem>
+		</Link>
+		<Link to="/example/contract-builder" className="no-underline">
+			<ListItem button>
+				<ListItemIcon>
+					<WebAssetIcon/>
+				</ListItemIcon>
+				<ListItemText primary="Contracts builder"/>
 			</ListItem>
 		</Link>
 		

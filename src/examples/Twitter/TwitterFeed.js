@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from "material-ui/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Avatar,
   CardHeader, TextField, LinearProgress, Tabs, Tab,
-} from "material-ui";
+} from "@material-ui/core";
 import TwitterUserPosts from './TwitterUserPosts';
 import { sendTweet, getMessageKey, tweetsCompare } from "./Helpers";
 import constants from "../../settings/constants";
