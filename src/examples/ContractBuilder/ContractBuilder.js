@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SendIcon from '@material-ui/icons/Send';
 import PrideGenerator from './PrideGenerator.js'
 import PrideParser from './PrideParser.js'
+import {compile} from '@waves/ride-js'
 import Menu from "@material-ui/core/Menu/Menu";
 
 
@@ -503,6 +504,19 @@ class ContractBuilder extends React.Component {
         this.closeLocalMenu(event);
     };
 
+    deployContract = () => {
+        window.Waves.signAndPublishTransaction({
+            type: 13,
+            data: {
+                fee: {
+                    assetId: 'WAVES',
+                    tokens: 0.01
+                },
+                script: compile(this.getPlainContract())
+            }
+        })
+    };
+
     render() {
 
         window.receiveMessage = this.receiveMessage;
@@ -587,24 +601,11 @@ class ContractBuilder extends React.Component {
                                 <ShowContract style={{marginRight: 10}}/>
                                 Open contract
                             </Button>
-                            <Button disabled={true} size="small" color="primary" className={classes.button}>
+                            <Button disabled={!window.Waves} onClick={this.deployContract} size="small" color="primary"
+                                    className={classes.button}>
                                 <SendIcon style={{marginRight: 10}}/>
                                 Deploy contract
                             </Button>
-                            <React.Fragment>
-                                <Button
-                                    aria-owns={this.state.localMenuOpen ? 'render-props-menu' : null}
-                                    aria-haspopup="true"
-                                    onClick={this.openLocalMenu}
-                                >
-                                    Local
-                                </Button>
-                                <Menu id="render-props-menu" anchorEl={this.state.localMenuAnchorEl}
-                                      open={this.state.localMenuOpen} onClose={this.closeLocalMenu}>
-                                    <MenuItem onClick={this.saveModelInLocalStorage}>Save</MenuItem>
-                                    <MenuItem onClick={this.restoreModelFromLocalStorage}>Restore</MenuItem>
-                                </Menu>
-                            </React.Fragment>
                             <Divider style={{marginTop: 16}}/>
 
                             <TextField

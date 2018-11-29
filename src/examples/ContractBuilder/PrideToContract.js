@@ -63,7 +63,7 @@ match (tx) {
 \t\tmatch (newState) {
 \t\t\tcase nxt:String => {
 \t\t\t\tif(isDefined(currentState) == false) then {
-\t\t\t\t\t# there is no state yet
+\t\t\t\t\t# there is no state yet, only "Init" is allowed
 \t\t\t\t\tnxt == "Init"
 \t\t\t\t} else {
 \t\t\t\t\tlet currentStateValue = extract(currentState)
